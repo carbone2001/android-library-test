@@ -81,4 +81,7 @@ dependencies {
 
     //Permission request
     implementation "com.google.accompanist:accompanist-permissions:0.23.1"
+
+    //Biometric auth
+    implementation "androidx.biometric:biometric:1.1.0"
 }
