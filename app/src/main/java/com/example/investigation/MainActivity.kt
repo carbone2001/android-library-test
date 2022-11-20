@@ -18,9 +18,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.FragmentActivity
-import com.example.investigation.biometricAuth.BiometricAuthScreen
+import com.example.investigation.crashlytics.CrashlyticsScreen
 import com.example.investigation.crypting.CryptoManager
-import com.example.investigation.downloadfile.DownloadFileScreen
 import com.example.investigation.encryptDataStore.DataToEncryptClass
 import com.example.investigation.encryptDataStore.DataToEncryptSerializer
 import com.example.investigation.ui.theme.InvestigationTheme
@@ -69,11 +68,12 @@ class MainActivity : FragmentActivity() {
 //                    }, readValue)
                     //EncriptDataStoreScreen(dataStore = this.dataStoreEncrypt)
                     //DownloadFileScreen()
-                    BiometricAuthScreen(isAuth){
-                        authenticate {
-                            isAuth.value = it
-                        }
-                    }
+//                    BiometricAuthScreen(isAuth){
+//                        authenticate {
+//                            isAuth.value = it
+//                        }
+//                    }
+                    CrashlyticsScreen()
 
                 }
             }
