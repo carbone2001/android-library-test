@@ -24,6 +24,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- PARA DEEPLINKING. Especificamos que neustra aplicacion puede-->
+            <!-- ser lanzada por otra aplicacion-->
+            <intent-filter android:autoVerify="true">
+                <data
+                    android:host="192.168.56.1"
+                    android:scheme="http" />
+
+                <!-- Nuestra activity puede ser lanzada por default-->
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!-- Nuestra activity puede ser lanzada desde el navegador-->
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+            </intent-filter>
+
+            <!-- PARA DEEPLINKING. Lo mismo que arriba pero para HTTPS-->
+            <intent-filter>
+                <data
+                    android:host="192.168.56.1"
+                    android:scheme="https" />
+
+                <!-- Nuestra activity puede ser lanzada por default-->
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!-- Nuestra activity puede ser lanzada desde el navegador-->
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
