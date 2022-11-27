@@ -1,9 +1,7 @@
 package com.carbonesoftware.test
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -12,9 +10,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
@@ -22,24 +18,17 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.whenStarted
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
+import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.testing.FakeAppUpdateManager
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.ktx.requestAppUpdateInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class MainActivity : FragmentActivity() {
     private val UPDATE_REQUEST_CODE = 111
@@ -97,7 +86,8 @@ class MainActivity : FragmentActivity() {
 //                        }
 //                    }
 //                    CrashlyticsScreen()
-                    DeeplinkingScreen()
+                    //DeeplinkingScreen()
+                    ParcelableObjectsOnIntentsScreen()
                 }
             }
         }
