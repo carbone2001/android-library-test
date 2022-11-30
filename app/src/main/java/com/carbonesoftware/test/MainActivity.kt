@@ -18,6 +18,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.FragmentActivity
+import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
@@ -85,9 +86,9 @@ class MainActivity : FragmentActivity() {
 //                            isAuth.value = it
 //                        }
 //                    }
-//                    CrashlyticsScreen()
+                    CrashlyticsScreen()
                     //DeeplinkingScreen()
-                    ParcelableObjectsOnIntentsScreen()
+                    //ParcelableObjectsOnIntentsScreen()
                 }
             }
         }

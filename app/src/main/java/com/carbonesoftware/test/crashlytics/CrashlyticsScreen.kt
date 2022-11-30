@@ -27,9 +27,19 @@ fun CrashlyticsScreen() {
             instance.setUserId("user@email.com")
             instance.setCustomKey("CODIGO_DEL_ERROR","Soy el mensaje del error ;)")
             instance.log("Log del error")
-            throw java.lang.RuntimeException("Exception controlada")
+            throw java.lang.RuntimeException("Exception PROVOCADA")
         }) {
             Text(text = "Provocar error CON datos")
+        }
+
+        Spacer(modifier = Modifier.size(15.dp))
+
+        Button(onClick = {
+            val instance = FirebaseCrashlytics.getInstance()
+            instance.log("LOG DE ERROR SIN CRASH")
+            instance.recordException(Exception("Exception controlada SIN CRASH"))
+        }) {
+            Text(text = "Provocar error SIN CRASH")
         }
     }
 }
