@@ -3,6 +3,7 @@ package com.carbonesoftware.test
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -18,12 +19,15 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.FragmentActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
+import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
+import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -33,6 +37,8 @@ import kotlinx.coroutines.flow.first
 
 class MainActivity : FragmentActivity() {
     private val UPDATE_REQUEST_CODE = 111
+
+    private val savedStateHandleViewModel: TestSavedStateHandleViewModel by viewModels()
 
     //DataStore normal
     private val Context.dataStore by preferencesDataStore("settings")
@@ -45,10 +51,8 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        savedInstanceState?.putString("algunaClave","algunValor")
         checkForUpdateAvailability(this)
-
 
         //Data store
         val readValue = MutableStateFlow("")
@@ -86,9 +90,10 @@ class MainActivity : FragmentActivity() {
 //                            isAuth.value = it
 //                        }
 //                    }
-                    CrashlyticsScreen()
+                    //CrashlyticsScreen()
                     //DeeplinkingScreen()
                     //ParcelableObjectsOnIntentsScreen()
+                    TestSavedStateHandleScreen(savedStateHandleViewModel)
                 }
             }
         }
