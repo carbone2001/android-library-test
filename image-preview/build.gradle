@@ -54,7 +54,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.carbone2001'
                 artifactId = 'android-library-test'
-                version = '1.0.1'
+                version = '1.0.2'
             }
         }
     }

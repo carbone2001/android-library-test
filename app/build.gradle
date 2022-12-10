@@ -107,5 +107,5 @@ dependencies {
 
 
     //My Librarises
-    implementation 'com.github.carbone2001:android-library-test:1.0.1'
+    //implementation 'com.github.carbone2001:android-library-test:1.0.1'
 }
