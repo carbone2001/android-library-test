@@ -52,10 +52,9 @@ afterEvaluate {
         publications {
             release(MavenPublication){
                 from components.release
-
                 groupId = 'com.github.carbone2001'
-                artifactId = 'image-preview'
-                version = '1.0'
+                artifactId = 'android-library-test'
+                version = '1.0.1'
             }
         }
     }
