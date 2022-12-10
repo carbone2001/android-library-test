@@ -28,6 +28,7 @@ import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
+import com.carbonesoftware.test.testLibrary.TestLibraryScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -93,7 +94,8 @@ class MainActivity : FragmentActivity() {
                     //CrashlyticsScreen()
                     //DeeplinkingScreen()
                     //ParcelableObjectsOnIntentsScreen()
-                    TestSavedStateHandleScreen(savedStateHandleViewModel)
+                    //TestSavedStateHandleScreen(savedStateHandleViewModel)
+                    TestLibraryScreen()
                 }
             }
         }
