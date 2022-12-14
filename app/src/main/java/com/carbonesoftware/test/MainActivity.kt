@@ -20,6 +20,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.carbonesoftware.test.animations.AnimationsScreen
 import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
@@ -95,7 +96,8 @@ class MainActivity : FragmentActivity() {
                     //DeeplinkingScreen()
                     //ParcelableObjectsOnIntentsScreen()
                     //TestSavedStateHandleScreen(savedStateHandleViewModel)
-                    TestLibraryScreen()
+                    //TestLibraryScreen()
+                    AnimationsScreen()
                 }
             }
         }
