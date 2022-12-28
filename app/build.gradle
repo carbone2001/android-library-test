@@ -36,40 +36,40 @@ android {
     flavorDimensions "paidMode", "minSdk"
 
     //Lista de productFlavors
-    productFlavors {
-        free {
-            //Asocio el product flavor con una dimension
-            dimension "paidMode"
-
-            //Configuraciones asociadas
-            applicationIdSuffix ".free"
-        }
-        paid {
-            dimension "paidMode"
-            applicationIdSuffix ".paid"
-        }
-        minSdk30{
-            dimension "minSdk"
-            minSdk 30
-        }
-        minSdk21{
-            dimension "minSdk"
-            minSdk 21
-        }
-    }
+//    productFlavors {
+//        free {
+//            //Asocio el product flavor con una dimension
+//            dimension "paidMode"
+//
+//            //Configuraciones asociadas
+//            applicationIdSuffix ".free"
+//        }
+//        paid {
+//            dimension "paidMode"
+//            applicationIdSuffix ".paid"
+//        }
+//        minSdk30{
+//            dimension "minSdk"
+//            minSdk 30
+//        }
+//        minSdk21{
+//            dimension "minSdk"
+//            minSdk 21
+//        }
+//    }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        alpha {
-            minifyEnabled false
-            applicationIdSuffix '.alpha'
-        }
+//        alpha {
+//            minifyEnabled false
+//            applicationIdSuffix '.alpha'
+//        }
         debug {
             minifyEnabled false
-            applicationIdSuffix '.debug'
+//            applicationIdSuffix '.debug'
         }
     }
     compileOptions {

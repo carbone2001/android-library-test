@@ -7,6 +7,8 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import com.example.investigation.ui.theme.LocalSpacing
+import com.example.investigation.ui.theme.Spacing
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,

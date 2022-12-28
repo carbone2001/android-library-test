@@ -1,9 +1,11 @@
 package com.carbonesoftware.test
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -30,19 +32,14 @@ import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
 import com.carbonesoftware.test.testLibrary.TestLibraryScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
+import com.example.investigation.theming.TestThemingScreen
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.example.investigation.biometricAuth.BiometricAuthScreen
-import com.example.investigation.crypting.CryptoManager
-import com.example.investigation.downloadfile.DownloadFileScreen
-import com.example.investigation.encryptDataStore.DataToEncryptClass
-import com.example.investigation.encryptDataStore.DataToEncryptSerializer
-import com.example.investigation.theming.TestThemingScreen
-import com.example.investigation.ui.theme.InvestigationTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 
+@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : FragmentActivity() {
     private val UPDATE_REQUEST_CODE = 111
 
