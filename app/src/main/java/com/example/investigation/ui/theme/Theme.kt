@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
@@ -17,7 +18,7 @@ private val LightColorPalette = lightColors(
     primary = BrunswickGreen,
     primaryVariant = Artichoke,
     secondary = FernGreen,
-    background = MistyRose,
+    background = PaleSilver,
     surface = MistyRose,
 //    onPrimary = Color.White,
     onSecondary = Color.Black,
@@ -50,10 +51,13 @@ fun InvestigationTheme(
 //    }
     val colors = LightColorPalette
 
-    MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+        MaterialTheme(
+            colors = colors,
+            typography = Typography,
+            shapes = Shapes,
+            content = content
+        )
+    }
+
 }

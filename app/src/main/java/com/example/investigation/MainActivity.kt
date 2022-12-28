@@ -23,6 +23,7 @@ import com.example.investigation.crypting.CryptoManager
 import com.example.investigation.downloadfile.DownloadFileScreen
 import com.example.investigation.encryptDataStore.DataToEncryptClass
 import com.example.investigation.encryptDataStore.DataToEncryptSerializer
+import com.example.investigation.theming.TestThemingScreen
 import com.example.investigation.ui.theme.InvestigationTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -69,11 +70,12 @@ class MainActivity : FragmentActivity() {
 //                    }, readValue)
                     //EncriptDataStoreScreen(dataStore = this.dataStoreEncrypt)
                     //DownloadFileScreen()
-                    BiometricAuthScreen(isAuth){
-                        authenticate {
-                            isAuth.value = it
-                        }
-                    }
+//                    BiometricAuthScreen(isAuth){
+//                        authenticate {
+//                            isAuth.value = it
+//                        }
+//                    }
+                    TestThemingScreen()
 
                 }
             }

@@ -10,10 +10,11 @@ import com.example.investigation.R
 
 val Montserrat = FontFamily(
     Font(R.font.montserrat_regular),
-    Font(R.font.montserrat_light, FontWeight.Light),
-    Font(R.font.montserrat_regular, FontWeight.Normal),
-    Font(R.font.montserrat_medium, FontWeight.Medium),
-    Font(R.font.montserrat_bold, FontWeight.Bold)
+    Font(resId = R.font.montserrat_light, weight = FontWeight.Light),
+    Font(resId = R.font.montserrat_medium, weight = FontWeight.Medium),
+    Font(resId = R.font.montserrat_bold, weight = FontWeight.Bold),
+    Font(resId = R.font.montserrat_extrabold, weight = FontWeight.ExtraBold),
+    Font(resId = R.font.montserrat_semibold, weight = FontWeight.SemiBold),
 )
 
 // Set of Material typography styles to start with
