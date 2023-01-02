@@ -1,12 +1,10 @@
-package com.example.investigation.theming
+package com.carbonesoftware.test.theming
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.investigation.ui.theme.LocalSpacing
 import com.example.investigation.ui.theme.spacing
 
 @Composable

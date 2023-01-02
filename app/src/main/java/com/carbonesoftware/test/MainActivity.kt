@@ -28,18 +28,18 @@ import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
+import com.carbonesoftware.test.responsive.TestResponsiveScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
 import com.carbonesoftware.test.testLibrary.TestLibraryScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
-import com.example.investigation.theming.TestThemingScreen
+import com.carbonesoftware.test.theming.TestThemingScreen
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 
-@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : FragmentActivity() {
     private val UPDATE_REQUEST_CODE = 111
 
@@ -100,7 +100,8 @@ class MainActivity : FragmentActivity() {
                     //ParcelableObjectsOnIntentsScreen()
                     //TestSavedStateHandleScreen(savedStateHandleViewModel)
                     //TestLibraryScreen()
-                    TestThemingScreen()
+                    //TestThemingScreen()
+                    TestResponsiveScreen()
                 }
             }
         }
