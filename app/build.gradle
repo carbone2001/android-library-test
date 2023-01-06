@@ -60,7 +60,13 @@ android {
 
     buildTypes {
         release {
+            //Minificará el codigo. Quita cosas innecesarias.
             minifyEnabled true
+
+            //Quita recursos innecesarios
+            shrinkResources true
+
+            //Carga el archivo de configuracion de ProGuard
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 //        alpha {
