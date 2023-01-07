@@ -23,6 +23,15 @@ import androidx.compose.ui.zIndex
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+data class DraggableListState<T>(
+    val positionsWithItemOver: HashMap<Int, Boolean>,
+    val itemPositionsInParent: HashMap<Int, Int>,
+    val draggedItem: T,
+    val currentDraggedPosition: Float?
+)
+
+//@Composable fun rememberDragableListState
+
 @Composable
 fun CustomDragAndDrop() {
     var coinList by rememberSaveable {
@@ -45,33 +54,28 @@ fun CustomDragAndDrop() {
     }
 
     //VARIABLES GENERALES, DEL DRAGGED ITEM
-    var nextPositionProximation by remember { mutableStateOf<Int?>(null) }
+    //DraggableListState
+    //var nextPositionProximation by remember { mutableStateOf<Int?>(null) }
+    var positionsWithItemOver by remember { mutableStateOf(HashMap<Int, Boolean>()) }
     var itemPositionByParent by remember { mutableStateOf(HashMap<Int, Int>()) }
     var dragedItem by remember { mutableStateOf<Coin?>(null) }
     var currentDraggedItemPosition by remember { mutableStateOf<Float?>(null) }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(coinList, key = { coin -> coin.position }) { coin ->
+        items(coinList) { coin ->
 
             //VARIABLES PROPIAS DE CADA ITEM
+            //DragableItemState
             var offsetY by remember { mutableStateOf(0f) }
             var isCurrentItemDragging by rememberSaveable { mutableStateOf(false) }
-            var someItemIsOver by remember { mutableStateOf(false) }
+            var someItemIsOver = positionsWithItemOver[coin.position] ?: false //by remember { mutableStateOf(false) }
             var itemSize by rememberSaveable { mutableStateOf(0) }
             var ownPosition by rememberSaveable { mutableStateOf(0f) }
 
             if (dragedItem != null) {
                 currentDraggedItemPosition?.let {
                     val distanceFromDragged = abs(it - ownPosition)
-                    Log.d(
-                        "COO",
-                        "item: ${coin.position} - ownPos: ${ownPosition} - distanceFromDragged: ${distanceFromDragged} - draggedPos: ${it}"
-                    )
-
-                    if (dragedItem?.position != coin.position && (distanceFromDragged < itemSize / 3)) {
-                        someItemIsOver = true
-                        nextPositionProximation = coin.position
-                    }
+                    positionsWithItemOver[coin.position] = dragedItem?.position != coin.position && (distanceFromDragged < itemSize / 3)
                 }
             } else {
                 someItemIsOver = false
@@ -92,7 +96,6 @@ fun CustomDragAndDrop() {
                     .onGloballyPositioned { coordinates ->
                         itemSize = coordinates.parentCoordinates?.size?.height ?: 0
                         itemPositionByParent[coin.position] = itemSize * coin.position
-                        val allListSize = itemSize * coinList.size
                         ownPosition = itemSize * coin.position + offsetY
                     }
                     .pointerInput(Unit) {
@@ -107,10 +110,16 @@ fun CustomDragAndDrop() {
                             onDragStart = {
                                 isCurrentItemDragging = true
                                 dragedItem = coin
+                                positionsWithItemOver = HashMap()
                             },
                             onDragEnd = {
                                 dragedItem?.let {
-                                    onListOrderChange(it.position, nextPositionProximation!!)
+                                     positionsWithItemOver.forEach{ (key, value) ->
+                                         if(value){
+                                             onListOrderChange(it.position, key)
+                                             return@forEach
+                                         }
+                                     }
                                 }
 
                                 isCurrentItemDragging = false
@@ -123,8 +132,6 @@ fun CustomDragAndDrop() {
                                 offsetY = 0f
                                 dragedItem = null
                                 currentDraggedItemPosition = null
-
-
                             }
                         )
                     },
