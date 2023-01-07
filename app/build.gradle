@@ -145,4 +145,8 @@ dependencies {
 
     //My Libraries
     implementation project(':image-preview')
+
+    //DragAndDrop
+    implementation "com.microsoft.device.dualscreen:draganddrop:1.0.0-alpha01"
+    implementation "org.burnoutcrew.composereorderable:reorderable:0.7.0"
 }

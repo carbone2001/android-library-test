@@ -25,6 +25,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
+import com.carbonesoftware.test.dragAndDrop.CustomDragAndDrop
+import com.carbonesoftware.test.dragAndDrop.DragAndDropSortableListViewModel
+import com.carbonesoftware.test.dragAndDrop.TestDragAndDropListSortScreen
+import com.carbonesoftware.test.dragAndDrop.TestDragAndDropScreen
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
@@ -44,7 +48,7 @@ class MainActivity : FragmentActivity() {
     private val UPDATE_REQUEST_CODE = 111
 
     private val savedStateHandleViewModel: TestSavedStateHandleViewModel by viewModels()
-
+    private val dragAndDropViewModel: DragAndDropSortableListViewModel by viewModels()
     //DataStore normal
     private val Context.dataStore by preferencesDataStore("settings")
 
@@ -57,7 +61,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         savedInstanceState?.putString("algunaClave","algunValor")
-        checkForUpdateAvailability(this)
+        //checkForUpdateAvailability(this)
 
         //Data store
         val readValue = MutableStateFlow("")
@@ -101,7 +105,12 @@ class MainActivity : FragmentActivity() {
                     //TestSavedStateHandleScreen(savedStateHandleViewModel)
                     //TestLibraryScreen()
                     //TestThemingScreen()
-                    TestResponsiveScreen()
+                    //TestResponsiveScreen()
+
+
+                    //TestDragAndDropScreen()
+                    //TestDragAndDropListSortScreen(dragAndDropViewModel)
+                    CustomDragAndDrop()
                 }
             }
         }
