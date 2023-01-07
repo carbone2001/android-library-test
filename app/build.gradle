@@ -13,6 +13,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply plugin: 'kotlin-parcelize'
+
 android {
     namespace 'com.carbonesoftware.test'
     compileSdk 32

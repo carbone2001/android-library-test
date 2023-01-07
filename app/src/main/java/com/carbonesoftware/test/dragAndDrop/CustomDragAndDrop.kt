@@ -1,39 +1,83 @@
 package com.carbonesoftware.test.dragAndDrop
 
-import android.util.Log
-import androidx.compose.foundation.background
+import android.os.Parcelable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-data class DraggableListState<T>(
-    val positionsWithItemOver: HashMap<Int, Boolean>,
-    val itemPositionsInParent: HashMap<Int, Int>,
-    val draggedItem: T,
-    val currentDraggedPosition: Float?
-)
+@Parcelize
+data class DraggableListState(
+    /**
+     * Ítems que tengan al ítem arrastrado encima
+     */
+    val itemsWithItemOver: HashMap<Int, Boolean> = HashMap(),
 
-//@Composable fun rememberDragableListState
+    /**
+     * Posiciones verticales (Y) de cada ítem dentro del padre
+     */
+    val itemPositionsInParent: HashMap<Int, Int> = HashMap(),
+
+    /**
+     * Índice del elemento arrastrado
+     */
+    val draggedItemIndex: Int? = null,
+
+    /**
+     * Posición vertical (Y) del elemento arrastrado
+     */
+    val currentDraggedItemPosition: Float? = null,
+) : Parcelable
+
+@Parcelize
+data class DraggableItemState(
+    /**
+     * Posición vertical del ítem
+     */
+    val offsetY: Float = 0f,
+
+    /**
+     * Devuelve *true* si el ítem actual esta siendo arrastrado
+     */
+    val isCurrentItemDragging: Boolean = false,
+
+    /**
+     * Devuelve *true* si el ítem arrastrado está sobre el item actual
+     */
+    val someItemIsOver: Boolean = false,
+
+    /**
+     * Altura del ítem
+     */
+    val itemSize: Int = 0,
+
+    /**
+     * Posición en vertical del ítem
+     */
+    val ownPosition: Float = 0f,
+) : Parcelable
 
 @Composable
-fun CustomDragAndDrop() {
+fun TestDraggableList() {
+
     var coinList by rememberSaveable {
         mutableStateOf(
             mutableListOf(
@@ -45,105 +89,144 @@ fun CustomDragAndDrop() {
         )
     }
 
-    val onListOrderChange = { fromPosition: Int, toPosition: Int ->
-        val fromCoin = coinList[fromPosition]
-        val toCoin = coinList[toPosition]
-        coinList[fromPosition] = fromCoin.copy(position = toPosition)
-        coinList[toPosition] = toCoin.copy(position = fromPosition)
-        coinList = ArrayList(coinList.sortedBy { it.position })
-    }
 
-    //VARIABLES GENERALES, DEL DRAGGED ITEM
-    //DraggableListState
-    //var nextPositionProximation by remember { mutableStateOf<Int?>(null) }
-    var positionsWithItemOver by remember { mutableStateOf(HashMap<Int, Boolean>()) }
-    var itemPositionByParent by remember { mutableStateOf(HashMap<Int, Int>()) }
-    var dragedItem by remember { mutableStateOf<Coin?>(null) }
-    var currentDraggedItemPosition by remember { mutableStateOf<Float?>(null) }
-
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(coinList) { coin ->
-
-            //VARIABLES PROPIAS DE CADA ITEM
-            //DragableItemState
-            var offsetY by remember { mutableStateOf(0f) }
-            var isCurrentItemDragging by rememberSaveable { mutableStateOf(false) }
-            var someItemIsOver = positionsWithItemOver[coin.position] ?: false //by remember { mutableStateOf(false) }
-            var itemSize by rememberSaveable { mutableStateOf(0) }
-            var ownPosition by rememberSaveable { mutableStateOf(0f) }
-
-            if (dragedItem != null) {
-                currentDraggedItemPosition?.let {
-                    val distanceFromDragged = abs(it - ownPosition)
-                    positionsWithItemOver[coin.position] = dragedItem?.position != coin.position && (distanceFromDragged < itemSize / 3)
-                }
-            } else {
-                someItemIsOver = false
-            }
-
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(if (someItemIsOver) Color.Blue else Color.Gray)
-                    .zIndex(if (isCurrentItemDragging) 1f else 0f)
-                    .offset {
-                        IntOffset(
-                            if (isCurrentItemDragging) 10 else 0,
-                            offsetY.roundToInt()
-                        )
-                    }
-                    .onGloballyPositioned { coordinates ->
-                        itemSize = coordinates.parentCoordinates?.size?.height ?: 0
-                        itemPositionByParent[coin.position] = itemSize * coin.position
-                        ownPosition = itemSize * coin.position + offsetY
-                    }
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                                isCurrentItemDragging = true
-                                offsetY += dragAmount.y
-                                ownPosition = itemSize * coin.position + offsetY
-                                currentDraggedItemPosition = ownPosition
-
-                            },
-                            onDragStart = {
-                                isCurrentItemDragging = true
-                                dragedItem = coin
-                                positionsWithItemOver = HashMap()
-                            },
-                            onDragEnd = {
-                                dragedItem?.let {
-                                     positionsWithItemOver.forEach{ (key, value) ->
-                                         if(value){
-                                             onListOrderChange(it.position, key)
-                                             return@forEach
-                                         }
-                                     }
-                                }
-
-                                isCurrentItemDragging = false
-                                offsetY = 0f
-                                dragedItem = null
-                                currentDraggedItemPosition = null
-                            },
-                            onDragCancel = {
-                                isCurrentItemDragging = false
-                                offsetY = 0f
-                                dragedItem = null
-                                currentDraggedItemPosition = null
-                            }
-                        )
-                    },
-                elevation = if (isCurrentItemDragging) 8.dp else 0.dp,
-            ) {
+    Box(modifier = Modifier.padding(16.dp)){
+        DraggableList(list = coinList, onListChanges = { coinList = it }) { item, state ->
+            Card(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = coin.ticker)
-                    Text(text = coin.price.toString())
+                    Text(text = item.ticker)
+                    Text(text = item.price.toString())
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun <T> DraggableList(
+    list: MutableList<T>,
+    onListChanges: (newList: MutableList<T>) -> Unit,
+    content: @Composable (T, state: DraggableItemState) -> Unit
+) {
+
+    val onListOrderChange = { fromIndex: Int, toIndex: Int ->
+        val fromItem = list[fromIndex]
+        val toItem = list[toIndex]
+        list[fromIndex] = toItem
+        list[toIndex] = fromItem
+        onListChanges(ArrayList(list))
+    }
+
+    var draggableListState by rememberSaveable {
+        mutableStateOf(DraggableListState())
+    }
+
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        itemsIndexed(list) { index, item ->
+            var itemState by rememberSaveable { mutableStateOf(DraggableItemState()) }
+            itemState = itemState.copy(
+                someItemIsOver = draggableListState.itemsWithItemOver[index] ?: false
+            )
+
+            if (draggableListState.draggedItemIndex != null) {
+                draggableListState.currentDraggedItemPosition?.let {
+                    val distanceFromDragged = abs(it - itemState.ownPosition)
+                    draggableListState.itemsWithItemOver[index] =
+                        draggableListState.draggedItemIndex != index && (distanceFromDragged < itemState.itemSize / 3)
+                }
+            } else {
+                itemState = itemState.copy(someItemIsOver = false, offsetY = 0f)
+            }
+
+            val horizontalPositionContent by animateIntAsState(
+                targetValue = if (itemState.isCurrentItemDragging) 15 else 0,
+                animationSpec = tween(durationMillis = 150),
+                finishedListener = { }
+            )
+
+            val opacityContent by animateFloatAsState(
+                targetValue = if (itemState.someItemIsOver) 0.5f else 1f,
+                animationSpec = tween(durationMillis = 150),
+                finishedListener = { }
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(opacityContent)
+                    .zIndex(if (itemState.isCurrentItemDragging) 1f else 0f)
+                    .offset {
+                        IntOffset(
+                            horizontalPositionContent,
+                            itemState.offsetY.roundToInt()
+                        )
+                    }
+                    .onGloballyPositioned { coordinates ->
+                        itemState = itemState.copy(
+                            itemSize = coordinates.parentCoordinates?.size?.height ?: 0
+                        )
+                        draggableListState.itemPositionsInParent[index] =
+                            itemState.itemSize * index
+                        itemState =
+                            itemState.copy(ownPosition = itemState.itemSize * index + itemState.offsetY)
+                    }
+                    .pointerInput(Unit) {
+                        detectDragGestures(
+                            onDrag = { _, dragAmount: Offset ->
+                                itemState = itemState.copy(isCurrentItemDragging = true)
+                                itemState =
+                                    itemState.copy(offsetY = itemState.offsetY + dragAmount.y)
+                                itemState =
+                                    itemState.copy(ownPosition = itemState.itemSize * index + itemState.offsetY)
+                                draggableListState =
+                                    draggableListState.copy(currentDraggedItemPosition = itemState.ownPosition)
+
+                            },
+                            onDragStart = {
+                                itemState = itemState.copy(isCurrentItemDragging = true)
+                                draggableListState =
+                                    draggableListState.copy(draggedItemIndex = index)
+                                draggableListState =
+                                    draggableListState.copy(itemsWithItemOver = HashMap())
+                            },
+                            onDragEnd = {
+                                draggableListState.draggedItemIndex?.let {
+                                    draggableListState.itemsWithItemOver.forEach { (key, value) ->
+                                        if (value) {
+                                            onListOrderChange(it, key)
+                                            return@forEach
+                                        }
+                                    }
+                                }
+
+                                itemState = itemState.copy(
+                                    isCurrentItemDragging = false,
+                                    offsetY = 0f,
+                                )
+                                draggableListState =
+                                    draggableListState.copy(
+                                        draggedItemIndex = null,
+                                        currentDraggedItemPosition = null
+                                    )
+                            },
+                            onDragCancel = {
+                                itemState = itemState.copy(
+                                    isCurrentItemDragging = false,
+                                    offsetY = 0f,
+                                )
+                                draggableListState =
+                                    draggableListState.copy(
+                                        draggedItemIndex = null,
+                                        currentDraggedItemPosition = null
+                                    )
+                            }
+                        )
+                    },
+            ) {
+                content(item, itemState)
             }
         }
 
