@@ -4,10 +4,9 @@ import android.os.Parcelable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -15,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
@@ -88,13 +88,22 @@ fun TestDraggableList() {
             )
         )
     }
+    
 
 
-    Box(modifier = Modifier.padding(16.dp)){
+    Column(modifier = Modifier.padding(16.dp)) {
+        Column(Modifier.background(Color.Red).fillMaxWidth().height(200.dp)) {
+            
+        }
+        
         DraggableList(list = coinList, onListChanges = { coinList = it }) { item, state ->
-            Card(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = item.ticker)
@@ -109,7 +118,8 @@ fun TestDraggableList() {
 fun <T> DraggableList(
     list: MutableList<T>,
     onListChanges: (newList: MutableList<T>) -> Unit,
-    content: @Composable (T, state: DraggableItemState) -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable (T, state: DraggableItemState) -> Unit,
 ) {
 
     val onListOrderChange = { fromIndex: Int, toIndex: Int ->
@@ -124,8 +134,11 @@ fun <T> DraggableList(
         mutableStateOf(DraggableListState())
     }
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        itemsIndexed(list) { index, item ->
+    val indexes = 0 until list.size
+
+    Column {
+        for (index in indexes) {
+            val item = list[index]
             var itemState by rememberSaveable { mutableStateOf(DraggableItemState()) }
             itemState = itemState.copy(
                 someItemIsOver = draggableListState.itemsWithItemOver[index] ?: false
@@ -135,7 +148,7 @@ fun <T> DraggableList(
                 draggableListState.currentDraggedItemPosition?.let {
                     val distanceFromDragged = abs(it - itemState.ownPosition)
                     draggableListState.itemsWithItemOver[index] =
-                        draggableListState.draggedItemIndex != index && (distanceFromDragged < itemState.itemSize / 3)
+                        draggableListState.draggedItemIndex != index && (distanceFromDragged < itemState.itemSize / 2)
                 }
             } else {
                 itemState = itemState.copy(someItemIsOver = false, offsetY = 0f)
@@ -157,7 +170,7 @@ fun <T> DraggableList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .alpha(opacityContent)
-                    .zIndex(if (itemState.isCurrentItemDragging) 1f else 0f)
+                    .zIndex(if (itemState.isCurrentItemDragging) 100f else 0f)
                     .offset {
                         IntOffset(
                             horizontalPositionContent,
@@ -177,13 +190,32 @@ fun <T> DraggableList(
                         detectDragGestures(
                             onDrag = { _, dragAmount: Offset ->
                                 itemState = itemState.copy(isCurrentItemDragging = true)
+
+                                var newOffsetPosition = itemState.offsetY + dragAmount.y
+                                var newGlobalPosition =
+                                    itemState.itemSize * index + itemState.offsetY
+
+                                val itemsPositions = draggableListState.itemPositionsInParent
+
+                                if (newGlobalPosition < 0f) {
+                                    newOffsetPosition = (0 - (index * itemState.itemSize)).toFloat()
+                                    newGlobalPosition = 1f
+                                } else if (newGlobalPosition > (itemsPositions[itemsPositions.size - 1]
+                                        ?: 0)
+                                ) {
+                                    newOffsetPosition =
+                                        ((itemsPositions.size - 1 - index) * itemState.itemSize).toFloat()/// (itemsPositions[itemsPositions.size - 1] ?: 0) -1f
+                                    newGlobalPosition =
+                                        (itemState.itemSize * itemsPositions.size).toFloat()
+
+                                }
+
                                 itemState =
-                                    itemState.copy(offsetY = itemState.offsetY + dragAmount.y)
+                                    itemState.copy(offsetY = newOffsetPosition)
                                 itemState =
-                                    itemState.copy(ownPosition = itemState.itemSize * index + itemState.offsetY)
+                                    itemState.copy(ownPosition = newGlobalPosition)
                                 draggableListState =
                                     draggableListState.copy(currentDraggedItemPosition = itemState.ownPosition)
-
                             },
                             onDragStart = {
                                 itemState = itemState.copy(isCurrentItemDragging = true)
@@ -229,7 +261,5 @@ fun <T> DraggableList(
                 content(item, itemState)
             }
         }
-
     }
-
 }
