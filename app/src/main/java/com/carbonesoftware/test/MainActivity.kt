@@ -28,6 +28,7 @@ import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
 import com.carbonesoftware.test.dragAndDrop.*
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
+import com.carbonesoftware.test.motion_layout.TestMotionLayoutScreen
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
 import com.carbonesoftware.test.responsive.TestResponsiveScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
@@ -103,7 +104,8 @@ class MainActivity : FragmentActivity() {
                     //TestLibraryScreen()
                     //TestThemingScreen()
                     //TestResponsiveScreen()
-                    TestDraggableList()
+                    //TestDraggableList()
+                    TestMotionLayoutScreen()
                 }
             }
         }
