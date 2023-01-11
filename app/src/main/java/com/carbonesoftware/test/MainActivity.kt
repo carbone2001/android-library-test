@@ -3,6 +3,7 @@ package com.carbonesoftware.test
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -39,10 +40,24 @@ import com.carbonesoftware.test.theming.TestThemingScreen
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
+import javax.inject.Named
 
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    @Inject
+    @Named("Option1")
+    lateinit var option1: String
+
+    @Inject
+    @Named("Option2")
+    lateinit var option2: String
+
     private val UPDATE_REQUEST_CODE = 111
 
     private val savedStateHandleViewModel: TestSavedStateHandleViewModel by viewModels()
@@ -60,6 +75,8 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         savedInstanceState?.putString("algunaClave","algunValor")
         //checkForUpdateAvailability(this)
+
+        Log.d("TEST NAMED INJECTION", "Option1: $option1 - Option2: $option2")
 
         //Data store
         val readValue = MutableStateFlow("")

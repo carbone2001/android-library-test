@@ -1,12 +1,19 @@
 package com.carbonesoftware.test
 
+import android.content.Context
 import com.carbonesoftware.test.navigation.MyRouteNavigator
 import com.carbonesoftware.test.navigation.RouteNavigator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * View model module
@@ -27,14 +34,26 @@ class ViewModelModule {
     @Provides
     @ViewModelScoped
     fun bindRouteNavigator(): RouteNavigator = MyRouteNavigator()
+}
 
-    /*/**
-     * Bind event launcher
-     *
-     * Bindear Event Launcher para Crashlytics
-     * @return
-     */
+
+@Module
+@InstallIn(ActivityComponent::class)
+object ActivityModule {
+
     @Provides
-    @ViewModelScoped
-    fun bindEventLauncher(): EventLauncher = MyEventLauncher()*/
+    @ActivityScoped
+    fun provideSomethingWithContext(
+        @ApplicationContext context: Context
+    ) = context.getString(R.string.app_name)
+
+    @Provides
+    @ActivityScoped
+    @Named("Option1")
+    fun provideOption1() = "I'm the option 1"
+
+    @Provides
+    @ActivityScoped
+    @Named("Option2")
+    fun provideOption2() = "I'm the option 2"
 }
