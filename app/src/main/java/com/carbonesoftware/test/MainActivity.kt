@@ -30,6 +30,8 @@ import com.carbonesoftware.test.dragAndDrop.*
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
 import com.carbonesoftware.test.motion_layout.TestMotionLayoutScreen
+import com.carbonesoftware.test.pagination.PaginationViewModel
+import com.carbonesoftware.test.pagination.TestPaginationScreen
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
 import com.carbonesoftware.test.responsive.TestResponsiveScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
@@ -62,6 +64,7 @@ class MainActivity : FragmentActivity() {
 
     private val savedStateHandleViewModel: TestSavedStateHandleViewModel by viewModels()
     private val dragAndDropViewModel: DragAndDropSortableListViewModel by viewModels()
+    private val paginationViewModel by viewModels<PaginationViewModel>()
     //DataStore normal
     private val Context.dataStore by preferencesDataStore("settings")
 
@@ -123,7 +126,8 @@ class MainActivity : FragmentActivity() {
                     //TestResponsiveScreen()
                     //TestDraggableList()
                     //TestDraggableList2()
-                    TestMotionLayoutScreen()
+                    //TestMotionLayoutScreen()
+                    TestPaginationScreen(viewModel = paginationViewModel)
                 }
             }
         }
