@@ -122,6 +122,7 @@ class MainActivity : FragmentActivity() {
                     //TestThemingScreen()
                     //TestResponsiveScreen()
                     //TestDraggableList()
+                    //TestDraggableList2()
                     TestMotionLayoutScreen()
                 }
             }
