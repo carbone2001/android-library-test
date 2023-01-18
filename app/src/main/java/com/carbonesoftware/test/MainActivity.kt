@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.carbonesoftware.test.animations.AnimationsScreen
 import com.carbonesoftware.test.animations.CrossfadeAnimationScreen
+import com.carbonesoftware.test.components.TestComponentScreen
 import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
@@ -134,7 +135,8 @@ class MainActivity : FragmentActivity() {
                     //TestDraggableList2()
                     //TestMotionLayoutScreen()
                     //TestPaginationScreen(viewModel = paginationViewModel)
-                    ShimmerEffectScreen()
+                    //ShimmerEffectScreen()
+                    TestComponentScreen()
                 }
             }
         }
