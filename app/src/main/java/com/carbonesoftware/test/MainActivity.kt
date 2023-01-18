@@ -38,6 +38,7 @@ import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIn
 import com.carbonesoftware.test.responsive.TestResponsiveScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
+import com.carbonesoftware.test.shimmerEffect.ShimmerEffectScreen
 import com.carbonesoftware.test.testLibrary.TestLibraryScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
 import com.carbonesoftware.test.theming.TestThemingScreen
@@ -133,6 +134,7 @@ class MainActivity : FragmentActivity() {
                     //TestDraggableList2()
                     //TestMotionLayoutScreen()
                     //TestPaginationScreen(viewModel = paginationViewModel)
+                    ShimmerEffectScreen()
                 }
             }
         }
