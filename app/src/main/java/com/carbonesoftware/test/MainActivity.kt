@@ -1,9 +1,12 @@
 package com.carbonesoftware.test
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -25,24 +28,45 @@ import com.carbonesoftware.test.animations.CrossfadeAnimationScreen
 import com.carbonesoftware.test.crashlytics.CrashlyticsScreen
 import com.carbonesoftware.test.crypting.CryptoManager
 import com.carbonesoftware.test.deeplinking.DeeplinkingScreen
+import com.carbonesoftware.test.dragAndDrop.*
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptClass
 import com.carbonesoftware.test.encryptDataStore.DataToEncryptSerializer
+import com.carbonesoftware.test.motion_layout.TestMotionLayoutScreen
+import com.carbonesoftware.test.pagination.PaginationViewModel
+import com.carbonesoftware.test.pagination.TestPaginationScreen
 import com.carbonesoftware.test.parcelableObjectsOnIntents.ParcelableObjectsOnIntentsScreen
+import com.carbonesoftware.test.responsive.TestResponsiveScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleScreen
 import com.carbonesoftware.test.savedStateHandle.TestSavedStateHandleViewModel
 import com.carbonesoftware.test.testLibrary.TestLibraryScreen
 import com.carbonesoftware.test.ui.theme.InvestigationTheme
+import com.carbonesoftware.test.theming.TestThemingScreen
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
+import javax.inject.Named
 
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    @Inject
+    @Named("Option1")
+    lateinit var option1: String
+
+    @Inject
+    @Named("Option2")
+    lateinit var option2: String
+
     private val UPDATE_REQUEST_CODE = 111
 
     private val savedStateHandleViewModel: TestSavedStateHandleViewModel by viewModels()
-
+    private val dragAndDropViewModel: DragAndDropSortableListViewModel by viewModels()
+    private val paginationViewModel by viewModels<PaginationViewModel>()
     //DataStore normal
     private val Context.dataStore by preferencesDataStore("settings")
 
@@ -55,7 +79,9 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         savedInstanceState?.putString("algunaClave","algunValor")
-        checkForUpdateAvailability(this)
+        //checkForUpdateAvailability(this)
+
+        Log.d("TEST NAMED INJECTION", "Option1: $option1 - Option2: $option2")
 
         //Data store
         val readValue = MutableStateFlow("")
@@ -99,7 +125,14 @@ class MainActivity : FragmentActivity() {
                     //TestSavedStateHandleScreen(savedStateHandleViewModel)
                     //TestLibraryScreen()
                     //AnimationsScreen()
-                    CrossfadeAnimationScreen()
+                    //CrossfadeAnimationScreen()
+                    //TestLibraryScreen()
+                    //TestThemingScreen()
+                    //TestResponsiveScreen()
+                    //TestDraggableList()
+                    //TestDraggableList2()
+                    //TestMotionLayoutScreen()
+                    //TestPaginationScreen(viewModel = paginationViewModel)
                 }
             }
         }

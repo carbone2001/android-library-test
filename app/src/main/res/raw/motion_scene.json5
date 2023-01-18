@@ -1,0 +1,87 @@
+{
+  ConstraintSets: {
+    //Estados iniciales
+    start: {
+      //Establecemos IDs que tendran propiedades asociadas
+      //Los valores deben setearse como si estuviesemos usan ConstraintLayout
+      //ES OBLIGATORIO USAR COMILLAS SIMPLES
+      profile_pic: {
+        witdth: 40,
+        height: 40,
+        start: ['parent','start', 16],
+        top: ['parent', 'top', 16],
+        //Animar variables
+        custom: {
+          background: '#08FF04'
+        }
+      },
+      username: {
+        top: ['profile_pic', 'top'],
+        bottom: ['profile_pic', 'bottom'],
+        start: ['profile_pic', 'end', 16],
+      },
+      //Servirá para tener un background
+      box: {
+        with: "spread",
+        height: "spread",
+        start: ['parent', 'start', 0],
+        end: ['parent', 'end', 0],
+        top: ['parent', 'top', 0],
+        //Para padding interior, usar valores negativos
+        bottom: ['parent', 'bottom', -16],
+      }
+    },
+    //Estados finales
+    end: {
+      profile_pic: {
+        witdth: 150,
+        height: 150,
+        //Para centrar horizontalmente,
+        //agregamos un contraint start y end sin padding
+        start: ['parent','start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top', 16],
+        custom: {
+          background: '#FFFFFF'
+        }
+      },
+      username: {
+        top: ['profile_pic', 'bottom', 16],
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+      },
+      box: {
+        with: "spread",
+        height: "spread",
+        start: ['parent', 'start', 0],
+        end: ['parent', 'end', 0],
+        top: ['parent', 'top', 0],
+        bottom: ['parent', 'bottom', -16],
+      }
+    }
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      pathMotionArc: 'startHorizontally',
+      KeyFrames: {
+        KeyAttributes: [
+          {
+            target: ['profile_pic'],
+            frames: [0, 100],
+          },
+          {
+            target: ['username'],
+            //Podemos realizar ciertas modificaciones segun en que estado
+            //de la animacion de encuentra. Por ejemplo, el transaltionX pasa
+            //a +90 cuando username llega al 50% de la animación.
+            //(debe coincidir con el array de frames)
+            frames: [0, 50, 100],
+            translationX: [0, 120, 0]
+          }
+        ]
+      }
+    }
+  }
+}
